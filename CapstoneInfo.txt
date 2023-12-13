@@ -1,0 +1,31 @@
+1. BaseAuditEntity ??
+2. Godown entity mapping with Employee and Stock :
+    
+    @OneToOne(optional = false)
+    @JoinColumn(name = "employee_id", unique = true)
+    private Employee manager;
+
+    @OneToMany(cascade= CascadeType.ALL)
+    private List<Stock>items= new ArrayList<Stock>();
+
+3. Inwards entity mapping with Godown :
+   
+    @ManyToOne
+    @JoinColumn(name = "godown_id")
+    private Godown godown;
+
+4. Outwards entity mapping with Godown : 
+
+    @ManyToOne
+    @JoinColumn(name = "godown_id", nullable = false)
+    private Godown godown;
+
+5. Report Entity columns : reportId , returnMonth , location , itemRecieved , itemDelivered , itemsReturned 
+
+6. Return Entity Mapping with Godown : 
+
+   @ManyToOne
+    @JoinColumn(name = "godown_id", nullable = false)
+    private Godown returnGodownId;
+
+7. Stock Entity columns : itemId , itemName , itemPrice , itemQuantity 
