@@ -1,12 +1,11 @@
 package com.incedo.capstone.smartinventory.controllers;
 
-import com.incedo.capstone.smartinventory.entities.Returns;
+import com.incedo.capstone.smartinventory.entities.ReturnsRegister;
 import com.incedo.capstone.smartinventory.services.ReturnsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -16,29 +15,36 @@ public class ReturnsController {
     @Autowired
     public ReturnsService returnsService;
 
-    @GetMapping
-    public List<Returns> getAllReturns() {
+    @GetMapping("/returns")
+    public List<ReturnsRegister> getAllReturns() {
 
         return returnsService.getAllReturns();
     }
 
     @GetMapping("/returns/{returnid}")
-    public Returns getReturnsById(@PathVariable int returnid)
+    public ReturnsRegister getReturnsById(@PathVariable int returnid)
     {
         return returnsService.getReturnsById(returnid);
     }
 
-    @PostMapping("/addReturns")
-    public ResponseEntity<Returns> addReturns(@PathVariable Returns returns)
+//    @PostMapping("/addReturns")
+//    public ResponseEntity<ReturnsRegister> addReturns(@PathVariable ReturnsRegister returnsRegister)
+//    {
+////        ReturnsRegister addedReturnsRegister = returnsService.addReturns(returnsRegister);
+////        return new ResponseEntity<>(addedReturnsRegister, HttpStatus.CREATED);
+//    }
+
+        @PostMapping("/returns/addReturns")
+    public ResponseEntity <ReturnsRegister> addReturns(@RequestBody ReturnsRegister returnsRegister)
     {
-        Returns addedReturns = returnsService.addReturns(returns);
-        return new ResponseEntity<>(addedReturns, HttpStatus.CREATED);
+        ReturnsRegister addedReturnsRegister = returnsService.addReturns(returnsRegister);
+        return new ResponseEntity<>(addedReturnsRegister, HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateReturns/{id}")
-    public ResponseEntity<Returns> updateReturns(@PathVariable int returnid, Returns updatedReturns)
+    @PutMapping("/updateReturns/{returnid}")
+    public ResponseEntity<ReturnsRegister> updateReturns(@PathVariable int returnid, @RequestBody ReturnsRegister updatedReturnsRegister)
     {
-        Returns updatedEntity = returnsService.updateReturns(returnid, updatedReturns);
+        ReturnsRegister updatedEntity = returnsService.updateReturns(returnid, updatedReturnsRegister);
         if(updatedEntity != null)
             return new ResponseEntity<>(updatedEntity, HttpStatus.OK);
         else
@@ -46,10 +52,10 @@ public class ReturnsController {
 
     }
 
-    @DeleteMapping("/deleteReturns/{id}")
-    public ResponseEntity<Void> deleteReturn(@PathVariable int returnid)
+    @DeleteMapping("/deleteReturns/{returnid}")
+    public String deleteReturn(@PathVariable ("returnid") int returnid)
     {
-        returnsService.deleteReturn(returnid);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        String msg = returnsService.deleteReturn(returnid);
+        return msg;
     }
 }

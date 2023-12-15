@@ -4,12 +4,11 @@ package com.incedo.capstone.smartinventory.entities;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-    @Entity
-    public class Returns {
+    @Entity(name="returns_register")
+    public class ReturnsRegister {
 
         @Id
         private int returnid;

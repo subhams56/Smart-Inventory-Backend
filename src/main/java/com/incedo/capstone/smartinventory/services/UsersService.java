@@ -6,6 +6,7 @@ import com.incedo.capstone.smartinventory.exceptions.UserIdNotFoundException;
 import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
 import com.incedo.capstone.smartinventory.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class UsersService {
         user.setPwd(encryptedPwd);
         Users savedUser = usersRepository.save(user);
         if(savedUser!= null)
-            return savedUser.getUsername()+" added to databse Successfully";
+            return savedUser.getUsername()+" added to database Successfully";
         else
             throw new UserCreationException("There is Some Problem Creating the User");
 

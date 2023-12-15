@@ -1,7 +1,7 @@
 package com.incedo.capstone.smartinventory.repositories;
-import com.incedo.capstone.smartinventory.entities.Returns;
+import com.incedo.capstone.smartinventory.entities.ReturnsRegister;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReturnsRepository extends JpaRepository<Returns, Integer> {
+public interface ReturnsRepository extends JpaRepository<ReturnsRegister, Integer> {
 
 }

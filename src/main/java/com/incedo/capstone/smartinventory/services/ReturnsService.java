@@ -1,5 +1,5 @@
 package com.incedo.capstone.smartinventory.services;
-import com.incedo.capstone.smartinventory.entities.Returns;
+import com.incedo.capstone.smartinventory.entities.ReturnsRegister;
 import com.incedo.capstone.smartinventory.exceptions.ReturnIdNotFoundException;
 import com.incedo.capstone.smartinventory.repositories.ReturnsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,40 +15,40 @@ public class ReturnsService {
     public ReturnsRepository returnsRepository;
 
 
-    public List<Returns> getAllReturns()
+    public List<ReturnsRegister> getAllReturns()
     {
         return returnsRepository.findAll();
     }
 
 
-    public Returns getReturnsById(int returnid)
+    public ReturnsRegister getReturnsById(int returnid)
     {
-        Optional<Returns> optionalReturns = returnsRepository.findById(returnid);
+        Optional<ReturnsRegister> optionalReturns = returnsRepository.findById(returnid);
         if(optionalReturns.isPresent())
             return optionalReturns.get();
         else
             throw new ReturnIdNotFoundException("No Record found for the "+returnid);
     }
 
-    public Returns addReturns(Returns returns) {
-        return returnsRepository.save(returns);
+    public ReturnsRegister addReturns(ReturnsRegister returnsRegister) {
+        return returnsRepository.save(returnsRegister);
     }
 
-    public Returns updateReturns(int returnid, Returns updatedReturns) {
-        Optional<Returns> opReturns = returnsRepository.findById(returnid);
+    public ReturnsRegister updateReturns(int returnid, ReturnsRegister updatedReturnsRegister) {
+        Optional<ReturnsRegister> opReturns = returnsRepository.findById(returnid);
         if (opReturns.isPresent())
         {
-            Returns existingReturn = opReturns.get();
+            ReturnsRegister existingReturn = opReturns.get();
 
-            existingReturn.setReturnid(updatedReturns.getReturnid());
-            existingReturn.setGodownid(updatedReturns.getGodownid());
-            existingReturn.setReturnDate(updatedReturns.getReturnDate());
-            existingReturn.setBillCheckedby(updatedReturns.getBillCheckedby());
-            existingReturn.setBillValue(updatedReturns.getBillValue());
-            existingReturn.setDeliveryDate(updatedReturns.getDeliveryDate());
-            existingReturn.setInvoiceNumber(updatedReturns.getInvoiceNumber());
-            existingReturn.setItemName(updatedReturns.getItemName());
-            existingReturn.setQuatity(updatedReturns.getQuatity());
+            existingReturn.setReturnid(updatedReturnsRegister.getReturnid());
+            existingReturn.setGodownid(updatedReturnsRegister.getGodownid());
+            existingReturn.setReturnDate(updatedReturnsRegister.getReturnDate());
+            existingReturn.setBillCheckedby(updatedReturnsRegister.getBillCheckedby());
+            existingReturn.setBillValue(updatedReturnsRegister.getBillValue());
+            existingReturn.setDeliveryDate(updatedReturnsRegister.getDeliveryDate());
+            existingReturn.setInvoiceNumber(updatedReturnsRegister.getInvoiceNumber());
+            existingReturn.setItemName(updatedReturnsRegister.getItemName());
+            existingReturn.setQuatity(updatedReturnsRegister.getQuatity());
 
             return returnsRepository.save(existingReturn);
 
@@ -60,7 +60,14 @@ public class ReturnsService {
 
     }
 
-    public void deleteReturn(int returnid) {
-        returnsRepository.deleteById(returnid);
+    public String deleteReturn(int returnid) {
+        if(returnsRepository.existsById(returnid))
+        {
+            returnsRepository.deleteById(returnid);
+            return "Deleted ";
+        }
+        else
+            throw new ReturnIdNotFoundException("No record Found!");
+
     }
 }
