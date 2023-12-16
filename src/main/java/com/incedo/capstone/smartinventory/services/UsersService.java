@@ -20,33 +20,72 @@ public class UsersService {
     @Autowired
     UsersRepository usersRepository;
 
+//    public String addUser(Users user) {
+//        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+//        String encryptedPwd = bcrypt.encode(user.getPwd());
+//        user.setPwd(encryptedPwd);
+//        Users savedUser = usersRepository.save(user);
+//        if(savedUser!= null)
+//            return savedUser+" added to database Successfully";
+//        else
+//            throw new UserCreationException("There is Some Problem Creating the User");
+//
+//    }
+
     public String addUser(Users user) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String encryptedPwd = bcrypt.encode(user.getPwd());
         user.setPwd(encryptedPwd);
         Users savedUser = usersRepository.save(user);
-        if(savedUser!= null)
-            return savedUser.getUsername()+" added to database Successfully";
-        else
+        if (savedUser != null) {
+            return successMessage(savedUser);
+        } else {
             throw new UserCreationException("There is Some Problem Creating the User");
-
+        }
     }
 
-    public String authenticateUser(Users user) {
+    private String successMessage(Users user) {
+        return String.format("User Successfully Added%nusername='%s',%nuserId=%d,%nrole='%s',%nmobileNumber=%s,%ngender='%s'",
+                user.getUsername(), user.getUserId(), user.getRole(), user.getMobileNumber(), user.getGender());
+    }
 
+//    public Users authenticateUser(Users user) {
+//
+//        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+//
+//        Optional<Users> opUser = usersRepository.findById(user.getUsername());
+//        if (opUser.isPresent()) {
+//            Users dbUser = opUser.get();
+//            if(bcrypt.matches(user.getPwd(),dbUser.getPwd()))
+//            {
+//                return dbUser;
+//            } else {
+//                throw new RuntimeException("Incorrect Password");
+//            }
+//        } else
+//            throw new UserNotFoundException("No User is found for this username");
+//    }
+//    private String authSuccessMessage(Users user) {
+//        return String.format("User Successfully Logged In %nusername='%s',%nuserId=%d,%nrole='%s',%nmobileNumber=%s,%ngender='%s'",
+//                user.getUsername(), user.getUserId(), user.getRole(), user.getMobileNumber(), user.getGender());
+//    }
+
+    public Users authenticateUser(Users user) {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
         Optional<Users> opUser = usersRepository.findById(user.getUsername());
         if (opUser.isPresent()) {
             Users dbUser = opUser.get();
-            if(bcrypt.matches(user.getPwd(),dbUser.getPwd()))
-            {
-                return "Authenticated User";
+            if (bcrypt.matches(user.getPwd(), dbUser.getPwd())) {
+                // Remove password from the response
+                dbUser.setPwd(null);
+                return dbUser;
             } else {
-                return "Incorrect Password";
+                throw new RuntimeException("Incorrect Password");
             }
-        } else
+        } else {
             throw new UserNotFoundException("No User is found for this username");
+        }
     }
 
     public String updateUser(Users user, String username) {
