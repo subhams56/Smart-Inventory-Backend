@@ -40,7 +40,6 @@ public class InwardService {
 
             existingInward.setBillCheckedBy(updatedInwards.getBillCheckedBy());
             existingInward.setDateOfSupply(updatedInwards.getDateOfSupply());
-            existingInward.setGodownId(updatedInwards.getGodownId());
             existingInward.setInvoiceNo(updatedInwards.getInvoiceNo());
             existingInward.setInwardsId(updatedInwards.getInwardsId());
             existingInward.setItemName(updatedInwards.getItemName());

@@ -47,7 +47,6 @@ public class OutwardsServices {
 			existingOutwards.setDateOfDelivery(updatedOutwards.getDateOfDelivery());
 			existingOutwards.setDateOfSupply(updatedOutwards.getDateOfSupply());
 			existingOutwards.setDeliveredTo(updatedOutwards.getDeliveredTo());
-			existingOutwards.setGodownId(updatedOutwards.getGodownId());
 			existingOutwards.setInvoiceNo(updatedOutwards.getInvoiceNo());
 			existingOutwards.setItemName(updatedOutwards.getItemName());
 			existingOutwards.setOutwardsId(updatedOutwards.getOutwardsId());

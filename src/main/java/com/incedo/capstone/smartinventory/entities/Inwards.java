@@ -10,7 +10,6 @@ public class Inwards {
     @Column(name="inwardsId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int InwardsId;
-    private int GodownId;
     private String NameOfTheSupplier;
     private String DateOfSupply;
     private String ItemName;
@@ -19,12 +18,10 @@ public class Inwards {
     private String receivedBy;
     private int ReceiptNo;
     private String BillCheckedBy;
-    public int getGodownId() {
-        return GodownId;
-    }
-    public void setGodownId(int godownId) {
-        GodownId = godownId;
-    }
+
+    @ManyToOne(optional= false)
+    @JoinColumn(name="godown_iD" )
+    private Godowns godowns;
     public String getNameOfTheSupplier() {
         return NameOfTheSupplier;
     }
@@ -79,15 +76,28 @@ public class Inwards {
     public void setInwardsId(int inwardsId) {
         InwardsId = inwardsId;
     }
-    @Override
-    public String toString() {
-        return "Inwards [InwardsId=" + InwardsId + ", GodownId=" + GodownId + ", NameOfTheSupplier=" + NameOfTheSupplier
-                + ", DateOfSupply=" + DateOfSupply + ", ItemName=" + ItemName + ", InvoiceNo=" + InvoiceNo
-                + ", quantity=" + quantity + ", receivedBy=" + receivedBy + ", ReceiptNo=" + ReceiptNo
-                + ", BillCheckedBy=" + BillCheckedBy + "]";
+
+    public Godowns getGodowns() {
+        return godowns;
     }
 
+    public void setGodowns(Godowns godowns) {
+        this.godowns = godowns;
+    }
 
-
-
+    @Override
+    public String toString() {
+        return "Inwards{" +
+                "InwardsId=" + InwardsId +
+                ", NameOfTheSupplier='" + NameOfTheSupplier + '\'' +
+                ", DateOfSupply='" + DateOfSupply + '\'' +
+                ", ItemName='" + ItemName + '\'' +
+                ", InvoiceNo=" + InvoiceNo +
+                ", quantity=" + quantity +
+                ", receivedBy='" + receivedBy + '\'' +
+                ", ReceiptNo=" + ReceiptNo +
+                ", BillCheckedBy='" + BillCheckedBy + '\'' +
+                ", godowns=" + godowns +
+                '}';
+    }
 }

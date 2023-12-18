@@ -1,9 +1,6 @@
 package com.incedo.capstone.smartinventory.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Outwards {
@@ -13,7 +10,6 @@ public class Outwards {
 	
 	@GeneratedValue
 	private int OutwardsId;
-	private int GodownId;
 	private String ItemName;
 	private int InvoiceNo;
 	private String DateOfSupply;
@@ -24,17 +20,15 @@ public class Outwards {
 	private int ReceiptNo;
 	private String BillValue;
 	private String BillCheckedBy;
+
+	@ManyToOne(optional= false)
+	@JoinColumn(name="godown_iD" )
+	private Godowns godowns;
 	public int getOutwardsId() {
 		return OutwardsId;
 	}
 	public void setOutwardsId(int outwardsId) {
 		OutwardsId = outwardsId;
-	}
-	public int getGodownId() {
-		return GodownId;
-	}
-	public void setGodownId(int godownId) {
-		GodownId = godownId;
 	}
 	public String getItemName() {
 		return ItemName;
@@ -96,13 +90,30 @@ public class Outwards {
 	public void setBillCheckedBy(String billCheckedBy) {
 		BillCheckedBy = billCheckedBy;
 	}
+
+	public Godowns getGodowns() {
+		return godowns;
+	}
+
+	public void setGodowns(Godowns godowns) {
+		this.godowns = godowns;
+	}
+
 	@Override
 	public String toString() {
-		return "Outwards [OutwardsId=" + OutwardsId + ", GodownId=" + GodownId + ", ItemName=" + ItemName
-				+ ", InvoiceNo=" + InvoiceNo + ", DateOfSupply=" + DateOfSupply + ", DateOfDelivery=" + DateOfDelivery
-				+ ", DeliveredTo=" + DeliveredTo + ", quantity=" + quantity + ", Purpose=" + Purpose + ", ReceiptNo="
-				+ ReceiptNo + ", BillValue=" + BillValue + ", BillCheckedBy=" + BillCheckedBy + "]";
+		return "Outwards{" +
+				"OutwardsId=" + OutwardsId +
+				", ItemName='" + ItemName + '\'' +
+				", InvoiceNo=" + InvoiceNo +
+				", DateOfSupply='" + DateOfSupply + '\'' +
+				", DateOfDelivery='" + DateOfDelivery + '\'' +
+				", DeliveredTo='" + DeliveredTo + '\'' +
+				", quantity=" + quantity +
+				", Purpose='" + Purpose + '\'' +
+				", ReceiptNo=" + ReceiptNo +
+				", BillValue='" + BillValue + '\'' +
+				", BillCheckedBy='" + BillCheckedBy + '\'' +
+				", godowns=" + godowns +
+				'}';
 	}
-	
-
 }

@@ -1,20 +1,21 @@
 package com.incedo.capstone.smartinventory.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-public class Godowns {
+public class Godowns  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String location = null;
     private Double capacityInQuintals = null;
     private LocalDate startDate = null;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name= "employee_name")
+    private Users users;
 
     public int getId() {
         return id;
@@ -42,9 +43,23 @@ public class Godowns {
         this.startDate = startDate;
     }
 
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
-        return "Godown [id=" + id + ", location=" + location + ", capacityInQuintals=" + capacityInQuintals
-                 + ", startDate=" + startDate + "]";
+        return "Godowns{" +
+                "id=" + id +
+                ", location='" + location + '\'' +
+                ", capacityInQuintals=" + capacityInQuintals +
+                ", startDate=" + startDate +
+                ", users=" + users +
+                '}';
     }
 }

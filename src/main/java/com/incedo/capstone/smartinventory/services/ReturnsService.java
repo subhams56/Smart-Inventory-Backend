@@ -41,7 +41,6 @@ public class ReturnsService {
             ReturnsRegister existingReturn = opReturns.get();
 
             existingReturn.setReturnid(updatedReturnsRegister.getReturnid());
-            existingReturn.setGodownid(updatedReturnsRegister.getGodownid());
             existingReturn.setReturnDate(updatedReturnsRegister.getReturnDate());
             existingReturn.setBillCheckedby(updatedReturnsRegister.getBillCheckedby());
             existingReturn.setBillValue(updatedReturnsRegister.getBillValue());
