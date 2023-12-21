@@ -57,4 +57,17 @@ public class InwardService {
     public void deleteInwards(int id) {
         inwardRepository.deleteById(id);
     }
+
+    public boolean purchaseInwards(Inwards inwards) {
+        Inwards i  = inwardRepository.findById(inwards.getInwardsId()).get();
+
+        i.setProductsToPurchase(inwards.getProductsToPurchase());
+
+        Inwards iDB = inwardRepository.save(i);
+
+        if(iDB != null)
+            return true;
+        else
+            return false;
+    }
 }

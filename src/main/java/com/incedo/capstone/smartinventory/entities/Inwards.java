@@ -2,6 +2,8 @@ package com.incedo.capstone.smartinventory.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Inwards {
     // Godown ID, Name of the Supplier, Date of Supply, Item Name,
@@ -22,6 +24,18 @@ public class Inwards {
     @ManyToOne(optional= false)
     @JoinColumn(name="godown_iD" )
     private Godowns godowns;
+
+    @ManyToMany
+    private List<Products> productsToPurchase;
+
+    public List<Products> getProductsToPurchase() {
+        return productsToPurchase;
+    }
+
+    public void setProductsToPurchase(List<Products> productsToPurchase) {
+        this.productsToPurchase = productsToPurchase;
+    }
+
     public String getNameOfTheSupplier() {
         return NameOfTheSupplier;
     }
@@ -98,6 +112,7 @@ public class Inwards {
                 ", ReceiptNo=" + ReceiptNo +
                 ", BillCheckedBy='" + BillCheckedBy + '\'' +
                 ", godowns=" + godowns +
+                ", productsToPurchase=" + productsToPurchase +
                 '}';
     }
 }

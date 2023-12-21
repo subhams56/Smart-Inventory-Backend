@@ -50,5 +50,13 @@ public class InwardController {
         inwardService.deleteInwards(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @PostMapping("/purchaseInwards")
+    public boolean purchaseInwards(@RequestBody Inwards inwards)
+    {
+       return  inwardService.purchaseInwards(inwards);
+
+    }
 }
 
