@@ -1,6 +1,9 @@
 package com.incedo.capstone.smartinventory.controllers;
 
+import com.incedo.capstone.smartinventory.dto.UsersDto;
 import com.incedo.capstone.smartinventory.entities.Users;
+import com.incedo.capstone.smartinventory.exceptions.IncorrectPasswordException;
+import com.incedo.capstone.smartinventory.exceptions.UserIdNotFoundException;
 import com.incedo.capstone.smartinventory.exceptions.UserNotFoundException;
 import com.incedo.capstone.smartinventory.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/users")
 public class UsersController {
 
 
@@ -26,69 +30,66 @@ public class UsersController {
         return re;
     }
 
-    @PutMapping("/users/{username}")
+    @PutMapping("/{username}")
+    public ResponseEntity<Object> updateUserByUsername(
+            @PathVariable("username") String username,
+            @RequestBody UsersDto updatedUserDto) {
 
-
-    public ResponseEntity<String>  Updateuser(@RequestBody Users user, @PathVariable("username") String username)
-    {
-        String message = usersService.updateUser(user,username);
-        ResponseEntity<String> re = new ResponseEntity<String>(message, HttpStatus.OK);
-        return re;
+        try {
+            UsersDto updatedUser = usersService.updateUser(username, updatedUserDto);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while updating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/users")
-    public List<Users> fetchUsers()
+    @GetMapping
+    public List<UsersDto> fetchUsers()
     {
         return usersService.fetchUsers();
     }
 
-//    @GetMapping("users/{userId}")
-//            public Users getUserById(@PathVariable("userId") int userId)
-//    {
-//        return usersService.fetchUserById(userId);
-//    }
 
-    @GetMapping("/users/{username}")
-    public Users getUserById(@PathVariable("username") String username)
-    {
-        return usersService.fetchUserByName(username);
-    }
 
-    @DeleteMapping("/users/{username}")
-    public String deleteUser(@PathVariable("username") String username)
-    {
-        return usersService.deleteuser(username);
+    @GetMapping("/{username}")
+    public ResponseEntity<Object> getUserById(@PathVariable("username") String username) {
+        try {
+            UsersDto userDto = usersService.fetchUserByName(username);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 
+    @DeleteMapping("/{username}")
+    public ResponseEntity<String> deleteUserByUsername(@PathVariable("username") String username) {
+        try {
+            String result = usersService.deleteUser(username);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while deleting the user.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-//    @PostMapping("/authenticateUsers")
-//    public Users authenticateUser(@RequestBody Users user)
-//    {
-//        return usersService.authenticateUser(user);
-//    }
+
 
     @PostMapping("/authenticateUsers")
     public ResponseEntity<Object> authenticateUser(@RequestBody Users user) {
         try {
-            Users authenticatedUser = usersService.authenticateUser(user);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "User Logged in Successfully");
-            response.put("username", authenticatedUser.getUsername());
-            response.put("userId", authenticatedUser.getUserId());
-            response.put("role", authenticatedUser.getRole());
-            response.put("mobileNumber", authenticatedUser.getMobileNumber());
-            response.put("gender", authenticatedUser.getGender());
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException e) {
-
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("message", "There was an error Authenticating the User, Try Again");
-            errorResponse.put("error", e.getMessage());
-
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+            UsersDto authenticatedUser = usersService.authenticateUser(user);
+            return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
+        } catch (UserNotFoundException | IncorrectPasswordException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while authenticating the user.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 }
